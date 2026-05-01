@@ -1,14 +1,23 @@
 # ProjEventos
 
-Proposta de trabalho: 
+## 📝 Proposta de Trabalho
+**Plataforma de Gestão de Eventos Corporativos e Acadêmicos**
 
-Plataforma de Gestão de Eventos Corporativos e Acadêmicos
-Equipe de desenvolvimento: Guilherme Albuquerque, João Pedro e Antônio
+O **ProjEventos** é uma plataforma desenvolvida para organizar eventos como congressos, simpósios e palestras. O objetivo é centralizar e facilitar processos como a inscrição de participantes, submissão de trabalhos científicos e a emissão automatizada de certificados.
 
-Uma plataforma para organizar eventos, como congressos, simpósios e palestras, facilitando a inscrição de participantes, submissão de trabalhos e emissão de certificados.
-Funcionalidades principais:
-• Cadastro de Eventos: Organizadores podem criar eventos, definir programação, palestrantes e categorias de ingressos (gratuito, pago, VIP).
-• Inscrição de Participantes: Usuários podem se inscrever nos eventos, escolher palestras/workshops de interesse e gerar QR codes para acesso.
-• Submissão de Trabalhos: Permitir que participantes submetam artigos científicos, pôsteres ou resumos, com um módulo de revisão por avaliadores.
-• Emissão de Certificados: Geração automática de certificados personalizados para participantes, palestrantes e organizadores após o evento.
-• Sistema de Feedback: Coleta de avaliações sobre palestras e o evento em geral, permitindo a análise para melhorias futuras.
+---
+
+## 👥 Equipe de Desenvolvimento
+* **Guilherme Albuquerque**
+* **João Pedro**
+* **Antônio**
+
+---
+
+## 🚀 Funcionalidades Principais
+
+* **📅 Cadastro de Eventos:** Organizadores podem criar eventos, definir a programação completa, listar palestrantes e gerenciar categorias de ingressos (gratuito, pago ou VIP).
+* **🎟️ Inscrição de Participantes:** Usuários podem realizar inscrições, escolher palestras ou workshops de interesse e gerar QR Codes para agilizar o controle de acesso.
+* **📄 Submissão de Trabalhos:** Módulo dedicado para que participantes enviem artigos científicos, pôsteres ou resumos, incluindo um sistema de revisão para os avaliadores.
+* **🎓 Emissão de Certificados:** Geração automática de certificados personalizados para participantes, palestrantes e organizadores após a conclusão do evento.
+* **📊 Sistema de Feedback:** Ferramenta para coleta de avaliações sobre as palestras e o evento em geral, gerando dados para análise e melhorias futuras.
