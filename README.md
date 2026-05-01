@@ -9,7 +9,7 @@ O **ProjEventos** é uma plataforma desenvolvida para organizar eventos como con
 
 ## 👥 Equipe de Desenvolvimento
 * **Guilherme Albuquerque**
-* **João Pedro**
+* **João Pedro Recalcatti**
 * **Antônio**
 
 ---
