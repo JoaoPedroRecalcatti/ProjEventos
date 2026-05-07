@@ -1,0 +1,29 @@
+{
+  "usuarios": [
+    {
+      "id": "c46ca298-2859-4414-a50e-441ec01cb612",
+      "nome": "Guilherme Albuquerque",
+      "email": "guilherme@exemplo.com",
+      "senha": "senha-segura-123",
+      "tipo": "ORGANIZADOR"
+    }
+  ],
+  "eventos": [
+    {
+      "id": "a6027aee-9dd1-4982-9c14-30bf0dc92119",
+      "nome": "Seminario de Computacao",
+      "data": "2026-03-15",
+      "local": "Auditório UEMS",
+      "descricao": "Seminário sobre Segurança de TI",
+      "programacao": "19:00 - Abertura"
+    }
+  ],
+  "inscricoes": [
+    {
+      "id": "3e7773dc-b6a8-436a-97cd-9002b1103ae1",
+      "dataInscricao": "2025-10-25",
+      "idUsuario": "c46ca298-2859-4414-a50e-441ec01cb612",
+      "idEvento": "a6027aee-9dd1-4982-9c14-30bf0dc92119"
+    }
+  ]
+}
