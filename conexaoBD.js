@@ -1,0 +1,11 @@
+import mongoose from "mongoose";
+
+mongoose.connect("mongodb://localhost:27017/platevento")
+    .then(() => {
+        console.log("Conexão bem sucedida ao MongoDB")
+    })
+    .catch((error) => {
+        console.log("Conexão falhou: ", error)
+    })
+
+export default mongoose;
