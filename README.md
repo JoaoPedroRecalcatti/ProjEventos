@@ -26,37 +26,87 @@ O **ProjEventos** é uma plataforma desenvolvida para organizar eventos como con
 
 ## 🛠️ Status do Desenvolvimento
 
-Atualmente, a base do sistema (Back-end) já conta com um **CRUD Dinâmico** para as três entidades principais solicitadas:
+A base do sistema (Back-end) conta com um **CRUD completo** para todas as entidades do projeto, agora persistindo os dados em um banco **MongoDB**:
+
 * **Usuário**: Cadastro e gestão de perfis (Organizadores/Participantes).
 * **Evento**: Criação e gerenciamento de informações sobre os eventos.
-* **InscriçãoEvento**: Registro da participação de usuários em eventos específicos.
+* **Programação**: Itens de horário e título vinculados a cada evento.
+* **Inscrição**: Registro da participação de usuários em eventos específicos.
+* **Trabalho**: Submissão de artigos, resumos e pôsteres dos participantes.
+* **Certificado**: Emissão e validação de certificados.
+* **Avaliação**: Feedback dos participantes (1 a 5 estrelas + comentário).
 
-O sistema utiliza um banco de dados persistente em formato JSON, garantindo que os dados não sejam perdidos ao reiniciar o servidor.
+Os modelos ficam separados na pasta `/models` (um arquivo por entidade) e a conexão com o banco está isolada em `conexaoBD.js`.
 
 ## 💻 Tecnologias Utilizadas
 
 * **Node.js**: Ambiente de execução.
-* **Express**: Framework para criação da API.
-* **File System (fs/promises)**: Persistência de dados em arquivos locais.
-* **UUID**: Geração de identificadores únicos para cada registro.
+* **Express**: Framework para criação da API REST.
+* **MongoDB**: Banco de dados NoSQL orientado a documentos.
+* **Mongoose**: ODM (Object Document Mapper) para modelagem dos schemas.
+* **MongoDB Compass**: Interface visual para gerenciar o banco.
+
+## 🗂️ Estrutura do Projeto
+
+```
+ProjTesi/
+├── conexaoBD.js          # Conexão com o MongoDB
+├── server.js             # Servidor Express e rotas (CRUD)
+├── models/               # Schemas Mongoose (um por entidade)
+│   ├── usuario.js
+│   ├── evento.js
+│   ├── programacao.js
+│   ├── inscricao.js
+│   ├── trabalho.js
+│   ├── certificado.js
+│   ├── avaliacao.js
+│   └── exemplo.js
+└── package.json
+```
 
 ## 🚀 Como Executar o Projeto
 
-1. Certifique-se de ter o Node.js instalado.
-2. Clone o repositório para sua máquina local.
-3. No terminal da pasta do projeto, instale as dependências:
+1. Certifique-se de ter o **Node.js** e o **MongoDB Community Server** instalados e em execução (o MongoDB usa por padrão a porta `27017`).
+2. (Opcional) Instale o **MongoDB Compass** para visualizar os dados graficamente.
+3. Clone o repositório para sua máquina local.
+4. No terminal da pasta do projeto, instale as dependências:
    ```bash
-    npm install
-4. Inicie o servidor em modo de desenvolvimento:
+   npm install
+   ```
+5. Inicie o servidor em modo de desenvolvimento:
    ```bash
    npm run dev
-5. O servidor estará rodando em: http://localhost:3000
-6. ## 🔗 Exemplos de USO no Insomnia
+   ```
+6. Se tudo der certo, você verá no console:
+   ```
+   Servidor de Gestão de Eventos rodando em: http://localhost:3000
+   Conexão bem sucedida ao MongoDB
+   ```
+7. O banco `platevento` será criado automaticamente no primeiro insert.
+
+## 🔗 Rotas da API
+
+Cada entidade segue o padrão CRUD completo:
 
 | Método | Rota | Descrição |
 | :--- | :--- | :--- |
-| **POST** | `/:tabela` | Cria um novo registro na tabela especificada (ex: `/usuarios`). |
-| **GET** | `/:tabela` | Retorna todos os registros da tabela informada. |
-| **GET** | `/:tabela/:id` | Busca um único registro através do seu ID único. |
-| **PUT** | `/:tabela/:id` | Atualiza os dados de um registro existente mantendo o ID. |
-| **DELETE** | `/:tabela/:id` | Remove permanentemente um registro do banco de dados JSON. |
+| **POST** | `/:entidade` | Cria um novo registro. |
+| **GET** | `/:entidade` | Lista todos os registros. |
+| **GET** | `/:entidade/:id` | Busca um registro pelo `_id` do Mongo. |
+| **PUT** | `/:entidade/:id` | Atualiza um registro existente. |
+| **DELETE** | `/:entidade/:id` | Remove o registro do banco. |
+
+**Entidades disponíveis:** `usuarios`, `eventos`, `programacao`, `inscricoes`, `trabalhos`, `certificados`, `avaliacoes` e `exemplo`.
+
+### Exemplo de uso no Insomnia
+
+`POST http://localhost:3000/usuarios`
+
+```json
+{
+  "nome": "Guilherme Albuquerque",
+  "email": "guilherme@exemplo.com",
+  "senha": "123",
+  "tipo": "ORGANIZADOR"
+}
+```
