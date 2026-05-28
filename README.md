@@ -10,7 +10,7 @@ O **ProjEventos** é uma plataforma desenvolvida para organizar eventos como con
 ## 👥 Equipe de Desenvolvimento
 * **Guilherme Albuquerque**
 * **João Pedro Recalcatti**
-* **Antônio Carlos F. de Souza**
+* **Antônio**
 
 ---
 
@@ -21,14 +21,15 @@ O **ProjEventos** é uma plataforma desenvolvida para organizar eventos como con
 * **📄 Submissão de Trabalhos:** Módulo dedicado para que participantes enviem artigos científicos, pôsteres ou resumos, incluindo um sistema de revisão para os avaliadores.
 * **🎓 Emissão de Certificados:** Geração automática de certificados personalizados para participantes, palestrantes e organizadores após a conclusão do evento.
 * **📊 Sistema de Feedback:** Ferramenta para coleta de avaliações sobre as palestras e o evento em geral, gerando dados para análise e melhorias futuras.
+* **🔐 Autenticação com Token JWT:** Sistema de login que retorna um token de acesso para proteger as rotas de gerenciamento de usuários.
 
 ---
 
 ## 🛠️ Status do Desenvolvimento
 
-A base do sistema (Back-end) conta com um **CRUD completo** para todas as entidades do projeto, agora persistindo os dados em um banco **MongoDB**:
+A base do sistema (Back-end) conta com um **CRUD completo** para todas as entidades do projeto, persistindo os dados em um banco **MongoDB**:
 
-* **Usuário**: Cadastro e gestão de perfis (Organizadores/Participantes).
+* **Usuário**: Cadastro, login com token JWT e gestão de perfis (Organizadores/Participantes).
 * **Evento**: Criação e gerenciamento de informações sobre os eventos.
 * **Programação**: Itens de horário e título vinculados a cada evento.
 * **Inscrição**: Registro da participação de usuários em eventos específicos.
@@ -36,7 +37,7 @@ A base do sistema (Back-end) conta com um **CRUD completo** para todas as entida
 * **Certificado**: Emissão e validação de certificados.
 * **Avaliação**: Feedback dos participantes (1 a 5 estrelas + comentário).
 
-Os modelos ficam separados na pasta `/models` (um arquivo por entidade) e a conexão com o banco está isolada em `conexaoBD.js`.
+O código foi organizado em camadas: os **models** ficam em `/models`, a **lógica das rotas** em `/controladores`, os **arquivos de roteamento** em `/rotas`, e os **middlewares** (como o `verificarToken`) em `/middleware`. A conexão com o banco está isolada em `conexaoBD.js` e o `server.js` apenas registra os routers.
 
 ## 💻 Tecnologias Utilizadas
 
@@ -45,13 +46,14 @@ Os modelos ficam separados na pasta `/models` (um arquivo por entidade) e a cone
 * **MongoDB**: Banco de dados NoSQL orientado a documentos.
 * **Mongoose**: ODM (Object Document Mapper) para modelagem dos schemas.
 * **MongoDB Compass**: Interface visual para gerenciar o banco.
+* **jsonwebtoken**: Biblioteca para geração e validação de tokens JWT no login.
 
 ## 🗂️ Estrutura do Projeto
 
 ```
 ProjTesi/
 ├── conexaoBD.js          # Conexão com o MongoDB
-├── server.js             # Servidor Express e rotas (CRUD)
+├── server.js             # Servidor Express (registra os routers)
 ├── models/               # Schemas Mongoose (um por entidade)
 │   ├── usuario.js
 │   ├── evento.js
@@ -61,6 +63,24 @@ ProjTesi/
 │   ├── certificado.js
 │   ├── avaliacao.js
 │   └── exemplo.js
+├── controladores/        # Lógica das rotas (funções async)
+│   ├── usuarios.js
+│   ├── eventos.js
+│   ├── programacao.js
+│   ├── inscricoes.js
+│   ├── trabalhos.js
+│   ├── certificados.js
+│   └── avaliacoes.js
+├── rotas/                # Roteamento por entidade
+│   ├── usuario.js
+│   ├── evento.js
+│   ├── programacao.js
+│   ├── inscricao.js
+│   ├── trabalho.js
+│   ├── certificado.js
+│   └── avaliacao.js
+├── middleware/
+│   └── verificarToken.js # Valida o token JWT
 └── package.json
 ```
 
@@ -98,9 +118,26 @@ Cada entidade segue o padrão CRUD completo:
 
 **Entidades disponíveis:** `usuarios`, `eventos`, `programacao`, `inscricoes`, `trabalhos`, `certificados`, `avaliacoes` e `exemplo`.
 
+### 🔐 Rota de Login
+
+| Método | Rota | Descrição |
+| :--- | :--- | :--- |
+| **POST** | `/login` | Recebe `email` e `senha`, valida no banco e retorna um token JWT válido por 1 hora. |
+
+### 🔒 Rotas protegidas por token
+
+As rotas abaixo exigem o header `Authorization: Bearer <token>` (token obtido no login):
+
+* `GET /usuarios`
+* `GET /usuarios/:id`
+* `PUT /usuarios/:id`
+* `DELETE /usuarios/:id`
+
+As demais rotas (incluindo `POST /usuarios` para cadastro e `POST /login`) ficam abertas.
+
 ### Exemplo de uso no Insomnia
 
-`POST http://localhost:3000/usuarios`
+**1. Criar usuário** — `POST http://localhost:3000/usuarios`
 
 ```json
 {
@@ -110,3 +147,21 @@ Cada entidade segue o padrão CRUD completo:
   "tipo": "ORGANIZADOR"
 }
 ```
+
+**2. Fazer login** — `POST http://localhost:3000/login`
+
+```json
+{
+  "email": "guilherme@exemplo.com",
+  "senha": "123"
+}
+```
+
+A resposta traz um campo `token` que deve ser copiado.
+
+**3. Acessar rota protegida** — `GET http://localhost:3000/usuarios`
+
+Na aba **Headers** do Insomnia, adicione:
+
+* **Name:** `Authorization`
+* **Value:** `Bearer <cole_o_token_aqui>`
