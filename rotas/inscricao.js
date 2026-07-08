@@ -4,14 +4,17 @@ import {
     buscarInscricaoPorID,
     criarInscricao,
     alterarInscricao,
-    deletarInscricao
+    deletarInscricao,
+    listarInscricoesPorUsuario
 } from "../controladores/inscricoes.js"
+import verificarToken from "../middleware/verificarToken.js"
 
 const router = Router()
 
 router.get("/inscricoes", buscarTodasInscricoes)
+router.get("/inscricoes/usuario/:idUsuario", listarInscricoesPorUsuario)
 router.get("/inscricoes/:id", buscarInscricaoPorID)
-router.post("/inscricoes", criarInscricao)
+router.post("/inscricoes", verificarToken, criarInscricao)
 router.put("/inscricoes/:id", alterarInscricao)
 router.delete("/inscricoes/:id", deletarInscricao)
 
