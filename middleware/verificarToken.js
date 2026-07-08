@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
 
-const SENHAJWT = "testandojwt"
+dotenv.config()
 
 const verificarToken = (req, res, next) => {
     const authHeader = req.headers["authorization"]
@@ -10,7 +11,7 @@ const verificarToken = (req, res, next) => {
         return res.status(401).json({ erro: true, mensagem: "Acesso negado" })
     }
 
-    jwt.verify(token, SENHAJWT, (erro, usuarioDecodificado) => {
+    jwt.verify(token, process.env.JWT_SECRET, (erro, usuarioDecodificado) => {
         if (erro) {
             return res.status(403).json({ erro: true, mensagem: "Token inválido" })
         }

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-mongoose.connect("mongodb://localhost:27017/platevento")
+dotenv.config()
+
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("Conexão bem sucedida ao MongoDB")
     })
