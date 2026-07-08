@@ -298,4 +298,3 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 ```
 
 Nos exemplos acima, os campos `id_usuario`, `id_avaliador` e `id_organizador` são preenchidos automaticamente pelo token JWT: não é preciso enviar no body.
-                     
