@@ -47,15 +47,15 @@ O código foi organizado em camadas: os models ficam em `/models`, a lógica das
 
 ## Tecnologias Utilizadas
 
-- Node.js — ambiente de execução.
-- Express — framework para criação da API REST.
-- MongoDB — banco de dados NoSQL.
-- Mongoose — ODM para modelagem dos schemas.
-- MongoDB Compass — interface visual para gerenciar o banco.
-- jsonwebtoken — geração e validação de tokens JWT no login.
-- mongoose-unique-validator — plugin do Mongoose para tratar erros de campos únicos.
-- bcrypt — criptografia (hash) das senhas antes de salvar no banco.
-- dotenv — carrega variáveis de ambiente de um arquivo `.env`.
+- Node.js: ambiente de execução.
+- Express: framework para criação da API REST.
+- MongoDB: banco de dados NoSQL.
+- Mongoose: ODM para modelagem dos schemas.
+- MongoDB Compass: interface visual para gerenciar o banco.
+- jsonwebtoken: geração e validação de tokens JWT no login.
+- mongoose-unique-validator: plugin do Mongoose para tratar erros de campos únicos.
+- bcrypt: criptografia (hash) das senhas antes de salvar no banco.
+- dotenv: carrega variáveis de ambiente de um arquivo `.env`.
 
 ## Estrutura do Projeto
 
@@ -178,9 +178,9 @@ As senhas são criptografadas com `bcrypt` antes de serem salvas. No cadastro (`
 
 Nenhuma credencial fica escrita direto no código-fonte. As configurações sensíveis são carregadas de um arquivo `.env` (fora do controle de versão) pelo pacote `dotenv`:
 
-- `MONGO_URI` — string de conexão do MongoDB.
-- `JWT_SECRET` — chave secreta usada para assinar e validar os tokens JWT.
-- `PORT` — porta em que o servidor Express escuta.
+- `MONGO_URI`: string de conexão do MongoDB.
+- `JWT_SECRET`: chave secreta usada para assinar e validar os tokens JWT.
+- `PORT`: porta em que o servidor Express escuta.
 
 O repositório contém um `.env.example` como modelo. Ao clonar o projeto, basta copiá-lo para `.env` e preencher com os valores adequados.
 
@@ -208,7 +208,7 @@ Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjE
 
 ## Exemplo de uso no Insomnia
 
-**1. Criar usuário** — `POST http://localhost:3000/usuarios`
+**1. Criar usuário**: `POST http://localhost:3000/usuarios`
 
 ```json
 {
@@ -219,7 +219,7 @@ Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjE
 }
 ```
 
-**2. Fazer login** — `POST http://localhost:3000/login`
+**2. Fazer login**: `POST http://localhost:3000/login`
 
 ```json
 {
@@ -230,7 +230,7 @@ Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjE
 
 A resposta traz um campo `token` que deve ser copiado.
 
-**3. Acessar rota protegida** — `GET http://localhost:3000/usuarios`
+**3. Acessar rota protegida**: `GET http://localhost:3000/usuarios`
 
 Na aba Headers do Insomnia, adicionar:
 
@@ -241,7 +241,7 @@ Na aba Headers do Insomnia, adicionar:
 
 Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/qrcodes`, que é aberto).
 
-**Criar Ingresso** (ORGANIZADOR) — `POST http://localhost:3000/ingressos`
+**Criar Ingresso** (ORGANIZADOR): `POST http://localhost:3000/ingressos`
 
 ```json
 {
@@ -251,7 +251,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar QRCode** — `POST http://localhost:3000/qrcodes`
+**Criar QRCode**: `POST http://localhost:3000/qrcodes`
 
 ```json
 {
@@ -260,7 +260,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar Feedback de Atividade** — `POST http://localhost:3000/feedbacksAtividade`
+**Criar Feedback de Atividade**: `POST http://localhost:3000/feedbacksAtividade`
 
 ```json
 {
@@ -270,7 +270,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar Avaliação de Trabalho** — `POST http://localhost:3000/avaliacoesTrabalho`
+**Criar Avaliação de Trabalho**: `POST http://localhost:3000/avaliacoesTrabalho`
 
 ```json
 {
@@ -280,7 +280,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Validar Presença** (ORGANIZADOR) — `POST http://localhost:3000/validacoesPresenca`
+**Validar Presença** (ORGANIZADOR): `POST http://localhost:3000/validacoesPresenca`
 
 ```json
 {
@@ -288,7 +288,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Gerar Relatório de Feedback** (ORGANIZADOR) — `POST http://localhost:3000/relatoriosFeedback`
+**Gerar Relatório de Feedback** (ORGANIZADOR): `POST http://localhost:3000/relatoriosFeedback`
 
 ```json
 {
@@ -297,4 +297,5 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-Nos exemplos acima, os campos `id_usuario`, `id_avaliador` e `id_organizador` são preenchidos automaticamente pelo token JWT — não é preciso enviar no body.
+Nos exemplos acima, os campos `id_usuario`, `id_avaliador` e `id_organizador` são preenchidos automaticamente pelo token JWT: não é preciso enviar no body.
+                     
