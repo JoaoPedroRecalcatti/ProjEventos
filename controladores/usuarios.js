@@ -1,7 +1,11 @@
 import Usuario from "../models/usuario.js"
 import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import dotenv from "dotenv"
 
-const SENHAJWT = "testandojwt"
+dotenv.config()
+
+const SALT_ROUNDS = 10
 
 const buscarTodosUsuarios = async (req, res) => {
     try {
@@ -25,7 +29,9 @@ const buscarUsuarioPorID = async (req, res) => {
 
 const criarUsuario = async (req, res) => {
     try {
-        const novoUsuario = new Usuario(req.body)
+        const { senha, ...restoBody } = req.body
+        const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS)
+        const novoUsuario = new Usuario({ ...restoBody, senha: senhaHash })
         await novoUsuario.save()
         res.status(201).json({ erro: false, mensagem: "Usuario criado com sucesso" })
     } catch (error) {
@@ -65,20 +71,28 @@ const loginUsuario = async (req, res) => {
 
         const usuario = await Usuario.findOne({ email })
 
-        if (!usuario || usuario.senha !== senha) {
+        if (!usuario) {
+            return res.status(400).json({ erro: true, mensagem: "Email ou senha inválidos" })
+        }
+
+        const senhaCorreta = await bcrypt.compare(senha, usuario.senha)
+
+        if (!senhaCorreta) {
             return res.status(400).json({ erro: true, mensagem: "Email ou senha inválidos" })
         }
 
         const token = jwt.sign(
             { id: usuario._id, nome: usuario.nome, tipo: usuario.tipo },
-            SENHAJWT,
+            process.env.JWT_SECRET,
             { expiresIn: '1h' }
         )
 
         res.status(200).json({
             erro: false,
             mensagem: "Usuario logado com sucesso",
-            token: token
+            token: token,
+            email: usuario.email,
+            tipo: usuario.tipo
         })
     } catch (error) {
         res.status(500).json({ erro: true, mensagem: "Erro ao fazer login" })
