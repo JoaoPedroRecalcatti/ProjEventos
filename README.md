@@ -188,15 +188,6 @@ O repositório contém um `.env.example` como modelo. Ao clonar o projeto, basta
 
 O arquivo `Colecao_de_Requisicoes_Insomnia` contém a coleção exportada do Insomnia com todas as requisições utilizadas para testar a API durante o desenvolvimento. Essa coleção cobre criação e cadastro de usuários, login com JWT, testes de rotas protegidas, CRUD completo das entidades principais (eventos, programação, inscrições, trabalhos, certificados, avaliações, ingressos, QR codes, validações de presença e relatórios de feedback), além de testes de permissão e validação de erros.
 
-### Observação sobre o formato
-
-Foi solicitado o arquivo no formato `.json`. No entanto, a versão utilizada do Insomnia (v12) exporta a coleção apenas no formato **Insomnia v5**, que utiliza sintaxe **YAML**. As opções disponíveis no menu de exportação foram apenas:
-
-- Insomnia v5 (YAML)
-- HAR (HTTP Archive Format)
-
-Por esse motivo o arquivo entregue está no formato YAML, mas contém exatamente a coleção completa das requisições e pode ser importado normalmente no Insomnia.
-
 ### Como importar
 
 1. Abrir o Insomnia.
