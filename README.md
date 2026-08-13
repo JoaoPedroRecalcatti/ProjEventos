@@ -43,7 +43,18 @@ O back-end conta com CRUD completo para todas as entidades do projeto, persistin
 - **Validação de Presença:** registro da validação da presença de um participante.
 - **Relatório de Feedback:** consolidação dos feedbacks de um evento.
 
-O código foi organizado em camadas: os models ficam em `/models`, a lógica das rotas em `/controladores`, os arquivos de roteamento em `/rotas` e os middlewares em `/middleware`. A conexão com o banco está isolada em `conexaoBD.js` e o `server.js` apenas registra os routers.
+O código do back-end foi organizado em camadas dentro de `backend/`: os models ficam em `models/`, a lógica das rotas em `controladores/`, os arquivos de roteamento em `rotas/` e os middlewares em `middleware/`. A conexão com o banco está isolada em `conexaoBD.js` e o `server.js` apenas registra os routers.
+
+### Front-end
+
+A interface está sendo desenvolvida em Next.js com o App Router, e a estilização é feita com Tailwind CSS. Nesta fase foi definida a estrutura de navegação do sistema, com o roteamento baseado em pastas: cada pasta criada dentro de `src/app/` vira uma rota, e o arquivo `page.js` dentro dela é a página exibida.
+
+- `/` — página inicial com o painel de gestão.
+- `/login` — acesso de organizadores.
+- `/eventos` — listagem de eventos.
+- `/eventos/editar` — edição de um evento (rota aninhada).
+
+A pasta `eventos/` possui um `layout.js` próprio, aplicado somente às páginas daquela seção, enquanto o `layout.js` da raiz define o idioma (`pt-br`) e os metadados da aplicação. As páginas ainda não consomem a API: nesta etapa o foco foi a organização das rotas e a estilização inicial.
 
 ## Tecnologias Utilizadas
 
@@ -56,52 +67,99 @@ O código foi organizado em camadas: os models ficam em `/models`, a lógica das
 - mongoose-unique-validator: plugin do Mongoose para tratar erros de campos únicos.
 - bcrypt: criptografia (hash) das senhas antes de salvar no banco.
 - dotenv: carrega variáveis de ambiente de um arquivo `.env`.
+- Next.js: framework React utilizado no front-end, com App Router.
+- React: biblioteca de construção das interfaces.
+- Tailwind CSS: framework de estilização por classes utilitárias.
+- ESLint: análise estática do código do front-end.
 
 ## Estrutura do Projeto
 
 ```
 ProjTesi/
-├── conexaoBD.js          # Conexão com o MongoDB
-├── server.js             # Servidor Express (registra os routers)
-├── models/               # Schemas Mongoose (um por entidade)
-├── controladores/        # Lógica das rotas (funções async)
-├── rotas/                # Roteamento por entidade
-├── middleware/
-│   └── verificarToken.js # Valida o token JWT
-├── documentos/           # DER, Diagrama de Classes e Documento de Requisitos
+├── backend/                  # API REST em Express (porta 3001)
+│   ├── conexaoBD.js          # Conexão com o MongoDB
+│   ├── server.js             # Servidor Express (registra os routers)
+│   ├── models/               # Schemas Mongoose (um por entidade)
+│   ├── controladores/        # Lógica das rotas (funções async)
+│   ├── rotas/                # Roteamento por entidade
+│   ├── middleware/
+│   │   └── verificarToken.js # Valida o token JWT
+│   ├── Colecao_de_Requisicoes_Insomnia.har  # Requisições exportadas do Insomnia
+│   └── package.json
+├── frontend/                 # Interface em Next.js (porta 3000)
+│   ├── src/app/
+│   │   ├── layout.js         # Layout raiz (idioma e metadados)
+│   │   ├── page.js           # Página inicial
+│   │   ├── globals.css       # Estilos globais e import do Tailwind
+│   │   ├── login/
+│   │   │   └── page.js       # Rota /login
+│   │   └── eventos/
+│   │       ├── layout.js     # Layout aplicado só à área de eventos
+│   │       ├── page.js       # Rota /eventos
+│   │       └── editar/
+│   │           └── page.js   # Rota /eventos/editar
+│   ├── public/               # Arquivos estáticos
+│   └── package.json
+├── documentos/               # DER, Diagrama de Classes e Documento de Requisitos
 │   ├── DER.pdf
 │   ├── Diagrama De Classes.pdf
 │   └── Documento de Requisitos.pdf
-├── Colecao_de_Requisicoes_Insomnia  # Coleção de requisições exportada do Insomnia
-└── package.json
+└── README.md
 ```
 
 ## Como Executar o Projeto
 
+O projeto é composto por duas aplicações independentes, que precisam ser executadas ao mesmo tempo, cada uma em um terminal.
+
+### Pré-requisitos
+
 1. Ter o Node.js e o MongoDB Community Server instalados e em execução (o MongoDB usa por padrão a porta 27017).
 2. (Opcional) Instalar o MongoDB Compass para visualizar os dados.
 3. Clonar o repositório.
-4. Criar um arquivo `.env` na raiz do projeto copiando o `.env.example`:
+
+### Back-end
+
+1. Entrar na pasta do back-end:
+   ```bash
+   cd backend
+   ```
+2. Criar um arquivo `.env` copiando o `.env.example`:
    ```
    MONGO_URI=mongodb://localhost:27017/platevento
    JWT_SECRET=coloque_uma_chave_secreta_aqui
-   PORT=3000
+   PORT=3001
    ```
    O `.env` não é versionado por conter credenciais.
-5. Instalar as dependências:
+3. Instalar as dependências:
    ```bash
    npm install --legacy-peer-deps
    ```
-6. Iniciar o servidor:
+4. Iniciar o servidor:
    ```bash
    npm run dev
    ```
-7. Se tudo der certo, o console mostra:
+5. Se tudo der certo, o console mostra:
    ```
-   Servidor de Gestão de Eventos rodando em: http://localhost:3000
+   Servidor de Gestão de Eventos rodando em: http://localhost:3001
    Conexão bem sucedida ao MongoDB
    ```
-8. O banco definido em `MONGO_URI` é criado automaticamente no primeiro insert.
+6. O banco definido em `MONGO_URI` é criado automaticamente no primeiro insert.
+
+### Front-end
+
+1. Em outro terminal, entrar na pasta do front-end:
+   ```bash
+   cd frontend
+   ```
+2. Instalar as dependências:
+   ```bash
+   npm install
+   ```
+3. Iniciar a aplicação:
+   ```bash
+   npm run dev
+   ```
+4. Acessar `http://localhost:3000` no navegador.
 
 ## Rotas da API
 
@@ -182,24 +240,24 @@ Nenhuma credencial fica escrita direto no código-fonte. As configurações sens
 - `JWT_SECRET`: chave secreta usada para assinar e validar os tokens JWT.
 - `PORT`: porta em que o servidor Express escuta.
 
-O repositório contém um `.env.example` como modelo. Ao clonar o projeto, basta copiá-lo para `.env` e preencher com os valores adequados.
+A pasta `backend/` contém um `.env.example` como modelo. Ao clonar o projeto, basta copiá-lo para `.env` na mesma pasta e preencher com os valores adequados.
 
 ## Coleção de Requisições (Insomnia)
 
-O arquivo `Colecao_de_Requisicoes_Insomnia` contém a coleção exportada do Insomnia com todas as requisições utilizadas para testar a API durante o desenvolvimento. Essa coleção cobre criação e cadastro de usuários, login com JWT, testes de rotas protegidas, CRUD completo das entidades principais (eventos, programação, inscrições, trabalhos, certificados, avaliações, ingressos, QR codes, validações de presença e relatórios de feedback), além de testes de permissão e validação de erros.
+O arquivo `backend/Colecao_de_Requisicoes_Insomnia.har` contém a coleção exportada do Insomnia com todas as requisições utilizadas para testar a API durante o desenvolvimento. Essa coleção cobre criação e cadastro de usuários, login com JWT, testes de rotas protegidas, CRUD completo das entidades principais (eventos, programação, inscrições, trabalhos, certificados, avaliações, ingressos, QR codes, validações de presença e relatórios de feedback), além de testes de permissão e validação de erros.
 
 ### Como importar
 
 1. Abrir o Insomnia.
 2. Ir em **Application → Preferences → Data**.
-3. Clicar em **Import** → **Choose File** e selecionar o arquivo `Colecao_de_Requisicoes_Insomnia`.
+3. Clicar em **Import** → **Choose File** e selecionar o arquivo `backend/Colecao_de_Requisicoes_Insomnia.har`.
 4. Confirmar a importação.
 
 Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjEventos API` e podem ser executadas para testar a API.
 
 ## Exemplo de uso no Insomnia
 
-**1. Criar usuário**: `POST http://localhost:3000/usuarios`
+**1. Criar usuário**: `POST http://localhost:3001/usuarios`
 
 ```json
 {
@@ -210,7 +268,7 @@ Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjE
 }
 ```
 
-**2. Fazer login**: `POST http://localhost:3000/login`
+**2. Fazer login**: `POST http://localhost:3001/login`
 
 ```json
 {
@@ -221,7 +279,7 @@ Depois disso, todas as requisições vão aparecer numa coleção chamada `ProjE
 
 A resposta traz um campo `token` que deve ser copiado.
 
-**3. Acessar rota protegida**: `GET http://localhost:3000/usuarios`
+**3. Acessar rota protegida**: `GET http://localhost:3001/usuarios`
 
 Na aba Headers do Insomnia, adicionar:
 
@@ -232,7 +290,7 @@ Na aba Headers do Insomnia, adicionar:
 
 Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/qrcodes`, que é aberto).
 
-**Criar Ingresso** (ORGANIZADOR): `POST http://localhost:3000/ingressos`
+**Criar Ingresso** (ORGANIZADOR): `POST http://localhost:3001/ingressos`
 
 ```json
 {
@@ -242,7 +300,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar QRCode**: `POST http://localhost:3000/qrcodes`
+**Criar QRCode**: `POST http://localhost:3001/qrcodes`
 
 ```json
 {
@@ -251,7 +309,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar Feedback de Atividade**: `POST http://localhost:3000/feedbacksAtividade`
+**Criar Feedback de Atividade**: `POST http://localhost:3001/feedbacksAtividade`
 
 ```json
 {
@@ -261,7 +319,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Criar Avaliação de Trabalho**: `POST http://localhost:3000/avaliacoesTrabalho`
+**Criar Avaliação de Trabalho**: `POST http://localhost:3001/avaliacoesTrabalho`
 
 ```json
 {
@@ -271,7 +329,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Validar Presença** (ORGANIZADOR): `POST http://localhost:3000/validacoesPresenca`
+**Validar Presença** (ORGANIZADOR): `POST http://localhost:3001/validacoesPresenca`
 
 ```json
 {
@@ -279,7 +337,7 @@ Todos os POST abaixo exigem o header `Authorization: Bearer <token>` (exceto `/q
 }
 ```
 
-**Gerar Relatório de Feedback** (ORGANIZADOR): `POST http://localhost:3000/relatoriosFeedback`
+**Gerar Relatório de Feedback** (ORGANIZADOR): `POST http://localhost:3001/relatoriosFeedback`
 
 ```json
 {
