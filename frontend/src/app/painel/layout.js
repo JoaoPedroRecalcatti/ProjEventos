@@ -1,9 +1,9 @@
 import Header from "../components/Header";
 
-export default function EventosLayout({ children }) {
+export default function PainelLayout({ children }) {
     return (
         <div>
-            <Header ativo="Descobrir" />
+            <Header ativo="Organizador" />
             <main className="mx-auto max-w-6xl px-7 pb-24 pt-12">{children}</main>
         </div>
     )
