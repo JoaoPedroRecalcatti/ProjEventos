@@ -1,18 +1,15 @@
-export function Card({nomeEvento, dataLocal, corDeFundo}) {
+import Tag from "./Tag";
+
+export function Card({ nomeEvento, dataLocal, tipoIngresso, tomIngresso, corDeFundo }) {
     return (
-        <div className={`border p-10 border-zinc-900 flex justify-between rounded-2xl ${corDeFundo}`}>
-            <div className="space-y-16 px-2">
-                <div>
-                    <h3 className="font-semibold">{nomeEvento}</h3>
-                    <p>{dataLocal}</p>
-                </div>
-                <div className="flex items-center gap-4 cursor-pointer">
-                    <div className="flex w-10 h-10 rounded-full bg-zinc-900 text-white items-center justify-center ">⤤</div>
-                    <span className="font-semibold md:inline">Ver Detalhes</span>
-                </div>
-            </div>
-            <div className="w-32 h-32 bg-white rounded-lg flex items-center justify-center border border-dashed border-gray-400">
-                [IMG]
+        <div className="group cursor-pointer">
+            <div className={`aspect-[4/3] rounded-xl ${corDeFundo}`}></div>
+            <h3 className="mt-3.5 text-[17px] font-medium leading-snug tracking-tight group-hover:underline group-hover:underline-offset-4">
+                {nomeEvento}
+            </h3>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-[13.5px] text-apagado">
+                <Tag texto={tipoIngresso} tom={tomIngresso} />
+                <span>{dataLocal}</span>
             </div>
         </div>
     )
