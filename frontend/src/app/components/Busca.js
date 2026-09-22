@@ -1,7 +1,21 @@
-export default function Busca({ placeholder }) {
+"use client";
+
+import { useState } from "react";
+
+export default function Busca({ placeholder, aoBuscar }) {
+    const [termo, setTermo] = useState("")
+
+    const digitar = (evento) => {
+        const valor = evento.target.value
+        setTermo(valor)
+        if (aoBuscar) aoBuscar(valor)
+    }
+
     return (
         <div className="flex max-w-xl items-center gap-2.5 rounded-full border border-borda bg-superficie py-1.5 pl-5 pr-1.5 focus-within:border-fraco">
             <input
+                value={termo}
+                onChange={digitar}
                 placeholder={placeholder}
                 className="min-w-0 flex-1 bg-transparent text-[15px] text-texto placeholder:text-fraco outline-none"
             />

@@ -1,7 +1,16 @@
+"use client";
+
+import { useState } from "react";
 import Campo from "../components/Campo";
 import Botao from "../components/Botao";
 
 export default function Cadastro(){
+    const [tipo, setTipo] = useState("PARTICIPANTE")
+    const tipos = [
+        { valor: "PARTICIPANTE", rotulo: "Participante" },
+        { valor: "ORGANIZADOR", rotulo: "Organizador" }
+    ]
+
     return (
         <div className="flex min-h-screen flex-col px-6 py-8">
             <span className="text-[19px] font-semibold tracking-tight">ProjEventos</span>
@@ -16,8 +25,16 @@ export default function Cadastro(){
                         <div className="flex flex-col gap-2">
                             <label className="text-[13px] font-medium">Tipo de conta</label>
                             <div className="grid grid-cols-2 gap-2.5">
-                                <button type="button" className="rounded-xl border border-texto bg-texto/5 py-3 text-sm font-semibold">Participante</button>
-                                <button type="button" className="rounded-xl border border-borda py-3 text-sm text-apagado hover:border-fraco">Organizador</button>
+                                {tipos.map((opcao) => (
+                                    <button
+                                        key={opcao.valor}
+                                        type="button"
+                                        onClick={() => setTipo(opcao.valor)}
+                                        className={`rounded-xl border py-3 text-sm transition-colors ${tipo === opcao.valor ? "border-texto bg-texto/5 font-semibold" : "border-borda text-apagado hover:border-fraco"}`}
+                                    >
+                                        {opcao.rotulo}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                         <Botao texto="Criar conta" variante="primario" largura />

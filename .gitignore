@@ -4,3 +4,7 @@ morto/
 
 # material de apoio de design, nao versionado
 design/
+
+# ferramentas de IA locais, nao versionadas
+.claude/
+.cursor/

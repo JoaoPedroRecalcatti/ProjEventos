@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Tag from "../../components/Tag";
 import Painel from "../../components/Painel";
 import Botao from "../../components/Botao";
@@ -11,10 +14,12 @@ export default function DetalheEvento(){
         { horario: "16:00", titulo: "Mesa redonda e encerramento" }
     ]
     const ingressos = [
-        { tipo: "Gratuito", preco: "R$ 0,00", selecionado: true },
-        { tipo: "Pago", preco: "R$ 80,00", selecionado: false },
-        { tipo: "VIP", preco: "R$ 150,00", selecionado: false }
+        { tipo: "Gratuito", preco: "R$ 0,00" },
+        { tipo: "Pago", preco: "R$ 80,00" },
+        { tipo: "VIP", preco: "R$ 150,00" }
     ]
+    const [escolhido, setEscolhido] = useState(ingressos[0].tipo)
+
     return (
         <div>
             <div className="h-52 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-950"></div>
@@ -60,10 +65,11 @@ export default function DetalheEvento(){
                             {ingressos.map((ingresso, index) => (
                                 <button
                                     key={index}
-                                    className={`flex items-center justify-between rounded-xl border px-4 py-3.5 text-[14.5px] transition-colors ${ingresso.selecionado ? "border-texto bg-texto/5" : "border-borda hover:border-fraco"}`}
+                                    onClick={() => setEscolhido(ingresso.tipo)}
+                                    className={`flex items-center justify-between rounded-xl border px-4 py-3.5 text-[14.5px] transition-colors ${escolhido === ingresso.tipo ? "border-texto bg-texto/5" : "border-borda hover:border-fraco"}`}
                                 >
                                     <span className="font-medium">{ingresso.tipo}</span>
-                                    <span className={`font-mono text-sm ${ingresso.selecionado ? "text-texto" : "text-apagado"}`}>{ingresso.preco}</span>
+                                    <span className={`font-mono text-sm ${escolhido === ingresso.tipo ? "text-texto" : "text-apagado"}`}>{ingresso.preco}</span>
                                 </button>
                             ))}
                         </div>

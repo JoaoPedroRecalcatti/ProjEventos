@@ -47,14 +47,34 @@ O código do back-end foi organizado em camadas dentro de `backend/`: os models 
 
 ### Front-end
 
-A interface está sendo desenvolvida em Next.js com o App Router, e a estilização é feita com Tailwind CSS. Nesta fase foi definida a estrutura de navegação do sistema, com o roteamento baseado em pastas: cada pasta criada dentro de `src/app/` vira uma rota, e o arquivo `page.js` dentro dela é a página exibida.
+A interface é desenvolvida em Next.js com o App Router, e a estilização é feita com Tailwind CSS. O roteamento é baseado em pastas: cada pasta criada dentro de `src/app/` vira uma rota, e o arquivo `page.js` dentro dela é a página exibida.
 
-- `/` — página inicial com o painel de gestão.
-- `/login` — acesso de organizadores.
-- `/eventos` — listagem de eventos.
-- `/eventos/editar` — edição de um evento (rota aninhada).
+- `/` — página inicial, com busca e filtros sobre os eventos em destaque.
+- `/login` — acesso à plataforma.
+- `/cadastro` — criação de conta, com escolha entre Participante e Organizador.
+- `/eventos` — listagem completa, carregada da API.
+- `/eventos/detalhe` — detalhe do evento, com programação e seleção de ingresso.
+- `/eventos/editar` — criação e edição de evento.
+- `/ingressos` — inscrições do usuário com o QR Code de acesso.
+- `/certificados` — certificados emitidos e seus códigos de validação.
+- `/painel` — painel do organizador, com indicadores, eventos e submissões.
+- `/painel/validar` — leitura de QR Code para validação de presença.
 
-A pasta `eventos/` possui um `layout.js` próprio, aplicado somente às páginas daquela seção, enquanto o `layout.js` da raiz define o idioma (`pt-br`) e os metadados da aplicação. As páginas ainda não consomem a API: nesta etapa o foco foi a organização das rotas e a estilização inicial.
+As pastas `eventos/` e `painel/` possuem um `layout.js` próprio, aplicado somente às páginas daquela seção, enquanto o `layout.js` da raiz define o idioma (`pt-br`), os metadados e o provedor de contexto da aplicação.
+
+A interface foi dividida em componentes reutilizáveis em `src/app/components/`: `Header`, `Cards`, `Botao`, `Campo`, `Tag`, `Painel`, `CabecalhoSecao`, `Busca`, `Filtros` e `QRCode`.
+
+### React Hooks
+
+O estado e os efeitos das telas são gerenciados com Hooks. Como o App Router trata todo componente como Server Component por padrão, os arquivos que usam Hooks declaram a diretiva `"use client"` na primeira linha.
+
+- **useState** — filtro e termo de busca em `/` e `/eventos`, tipo de conta em `/cadastro`, ingresso escolhido em `/eventos/detalhe` e as chaves de "Evento online" e "Aceitar submissões" em `/eventos/editar`.
+- **useEffect** — dentro do hook `useFetch`, com função de limpeza que descarta a resposta caso o componente seja desmontado antes de a requisição terminar.
+- **useContext** — `src/app/contexto/UsuarioContext.js` disponibiliza o usuário autenticado para toda a árvore. O `Header` consome esse contexto para exibir o nome e para mostrar o item "Organizador" apenas quando o `tipo` do usuário é `ORGANIZADOR`, sem repassar propriedades nível a nível.
+- **useRef** — em `/login`, para dar foco ao campo de e-mail assim que a página é montada.
+- **Hook customizado** — `src/app/hooks/useFetch.js` concentra a requisição HTTP e devolve `{ dados, carregando }`, usado por `/eventos` para buscar os eventos da API.
+
+Não foram utilizados `useMemo` nem `useCallback`: as listas do projeto têm poucos itens e não há gargalo de desempenho medido que justifique o custo adicional de memorização.
 
 ## Tecnologias Utilizadas
 
@@ -88,14 +108,32 @@ ProjTesi/
 │   └── package.json
 ├── frontend/                 # Interface em Next.js (porta 3000)
 │   ├── src/app/
-│   │   ├── layout.js         # Layout raiz (idioma e metadados)
+│   │   ├── layout.js         # Layout raiz (idioma, metadados e provedor de contexto)
 │   │   ├── page.js           # Página inicial
-│   │   ├── globals.css       # Estilos globais e import do Tailwind
+│   │   ├── globals.css       # Tokens de cor e import do Tailwind
+│   │   ├── components/       # Componentes reutilizáveis da interface
+│   │   ├── hooks/
+│   │   │   └── useFetch.js   # Hook customizado de requisição HTTP
+│   │   ├── contexto/
+│   │   │   └── UsuarioContext.js  # Contexto do usuário autenticado
 │   │   ├── login/
 │   │   │   └── page.js       # Rota /login
+│   │   ├── cadastro/
+│   │   │   └── page.js       # Rota /cadastro
+│   │   ├── ingressos/
+│   │   │   └── page.js       # Rota /ingressos
+│   │   ├── certificados/
+│   │   │   └── page.js       # Rota /certificados
+│   │   ├── painel/
+│   │   │   ├── layout.js     # Layout da área do organizador
+│   │   │   ├── page.js       # Rota /painel
+│   │   │   └── validar/
+│   │   │       └── page.js   # Rota /painel/validar
 │   │   └── eventos/
 │   │       ├── layout.js     # Layout aplicado só à área de eventos
 │   │       ├── page.js       # Rota /eventos
+│   │       ├── detalhe/
+│   │       │   └── page.js   # Rota /eventos/detalhe
 │   │       └── editar/
 │   │           └── page.js   # Rota /eventos/editar
 │   ├── public/               # Arquivos estáticos
@@ -160,6 +198,8 @@ O projeto é composto por duas aplicações independentes, que precisam ser exec
    npm run dev
    ```
 4. Acessar `http://localhost:3000` no navegador.
+
+A rota `/eventos` busca os dados da API em `http://localhost:3001/eventos`, portanto o back-end precisa estar em execução para que a listagem apareça. As demais telas funcionam de forma independente.
 
 ## Rotas da API
 

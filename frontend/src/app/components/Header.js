@@ -1,7 +1,12 @@
+"use client";
+
 import Botao from "./Botao";
+import { useUsuario } from "../contexto/UsuarioContext";
 
 export default function Header({ ativo }) {
-    const links = ["Descobrir", "Meus Ingressos", "Certificados", "Organizador"]
+    const { usuario } = useUsuario()
+    const links = ["Descobrir", "Meus Ingressos", "Certificados"]
+    if (usuario && usuario.tipo === "ORGANIZADOR") links.push("Organizador")
     return (
         <header className="sticky top-0 z-50 border-b border-borda-suave bg-fundo/90 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center gap-8 px-7 py-4">
@@ -23,9 +28,15 @@ export default function Header({ ativo }) {
                         </a>
                     ))}
                 </nav>
-                <div className="ml-auto flex gap-2.5 md:ml-0">
-                    <Botao texto="Entrar" variante="elevado" />
-                    <Botao texto="Criar conta" variante="primario" />
+                <div className="ml-auto flex items-center gap-2.5 md:ml-0">
+                    {usuario ? (
+                        <span className="rounded-full border border-borda px-4 py-2 text-[13px] font-medium">{usuario.nome}</span>
+                    ) : (
+                        <>
+                            <Botao texto="Entrar" variante="elevado" />
+                            <Botao texto="Criar conta" variante="primario" />
+                        </>
+                    )}
                 </div>
             </div>
         </header>

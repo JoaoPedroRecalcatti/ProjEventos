@@ -1,7 +1,16 @@
+"use client";
+
+import { useRef, useEffect } from "react";
 import Campo from "../components/Campo";
 import Botao from "../components/Botao";
 
 export default function Login(){
+    const campoEmail = useRef(null)
+
+    useEffect(() => {
+        campoEmail.current.focus()
+    }, [])
+
     return (
         <div className="flex min-h-screen flex-col px-6 py-8">
             <span className="text-[19px] font-semibold tracking-tight">ProjEventos</span>
@@ -12,7 +21,7 @@ export default function Login(){
                         Acompanhe suas inscrições, ingressos e certificados.
                     </p>
                     <form className="mt-8 flex flex-col gap-3">
-                        <Campo rotulo="E-mail" tipo="email" placeholder="voce@exemplo.com" />
+                        <Campo ref={campoEmail} rotulo="E-mail" tipo="email" placeholder="voce@exemplo.com" />
                         <Campo rotulo="Senha" tipo="password" placeholder="••••••••••" />
                         <Botao texto="Continuar" variante="primario" largura />
                     </form>
